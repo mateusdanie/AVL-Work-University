@@ -7,5 +7,7 @@ typedef struct no{
     struct no *dir;
 }No;
 
+int height(No *pointer);
+
 
 #endif
