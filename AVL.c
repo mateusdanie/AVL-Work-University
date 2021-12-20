@@ -66,3 +66,115 @@ int countNodes(No *pointer, int *count){
         countNodes(pointer->dir, count);
     }
 }
+
+int bal(No *pointer){
+    int he = height(pointer->esq);
+    int hd = height(pointer->dir);
+
+    pointer->bal = hd - he;
+}
+
+int allBals(No *pointer){
+    if(pointer->esq != NULL){
+        allBals(pointer->esq);
+    }
+
+    if(pointer->dir != NULL){
+        allBals(pointer->dir);
+    }
+
+    bal(pointer);
+}
+
+int rotation1(No *pointer, int *h){
+    No *pointerU = pointer->esq;
+    bal(pointerU);
+    if(pointer->bal == 01){
+        pointer->esq = pointerU->dir;
+        pointerU->dir = pointer;
+        pointer = pointerU;
+        pointer->dir->bal = 0;
+    }else{
+        No *pointerV = pointerU->dir;
+        bal(pointerV);
+        pointerU->dir = pointerV->esq;
+        pointerV->esq = pointerV->dir;
+        pointerV->dir = pointer;
+
+        if(pointerV->bal == 1){
+            pointer->bal = 0;
+            pointerU->bal = -1;
+        }else{
+            pointer->bal = 1;
+            pointerU->bal = 0;
+        }
+        pointer = pointerV;
+    }
+
+    pointer->bal = 0, h = 0;
+}
+
+int rotation2(No *pointer, int *h){
+
+}
+
+int insertAVL(int x, No *pointer, int *h){
+    if(pointer == NULL){
+        pointer->key = x;
+        pointer->height = height(pointer);
+        pointer->bal = bal(pointer);
+        h = -1;
+    }else{
+        if(x == pointer->key){
+            printf("Elemento, encontrado!\n");
+            return 1;
+        }
+
+        if(x < pointer->key){
+            insertAVL(x, pointer->esq, h);
+
+            if(h == -1){
+                switch (pointer->bal)
+                {
+                case 1:
+                    pointer->bal = 0;
+                    h = 0;
+                    break;
+                
+                case 0:
+                    pointer->bal = 1;
+                    break;
+
+                case -1:
+                    rotation1(pointer, h);
+                    break;
+
+                default:
+                    break;
+                }
+            }
+        }else{
+            insertAVL(x, pointer->dir, h);
+            if(h == -1){
+                switch (pointer->bal)
+                {
+                case -1:
+                    pointer->bal = 0;
+                    h = 0;
+                    break;
+                
+                case 0:
+                    pointer->bal = 1;
+                    break;
+
+                case 1:
+                    rotation2(pointer, h);
+                    break;
+                    
+                default:
+                    break;
+                }
+            }
+        }
+    }
+}
