@@ -155,6 +155,108 @@ int rotationADD2(No **pointer, int *h){
     (*pointer)->bal = 0, h = 0;
 }
 
+int rotationRemove1(No **pointer, int *h){
+    No *pointerU = (*pointer)->esq;
+    bal(pointerU);
+
+    if(pointerU->bal <= 0){
+        (*pointer)->esq = pointerU->dir;
+        pointerU->dir = (*pointer);
+        (*pointer) = pointerU;
+
+        if(pointerU->bal == -1){
+            pointerU->bal = (*pointer)->dir->bal = 0;
+            h = -1;
+        }else{
+            pointerU->bal = 1;
+            (*pointer)->dir->bal = -1;
+            h = 0;
+        }
+
+    }else{
+
+        No *pointerV = pointerU->dir;
+        bal(pointerV);
+        pointerU->dir = pointerV->esq;
+        pointerV->esq = pointerU;
+        (*pointer)->esq = pointerV->dir;
+        pointerV->dir = (*pointer);
+        (*pointer) = pointerV;
+
+        switch (pointerV->bal)
+        {
+        case -1:
+            pointerU->bal = 0;
+            (*pointer)->dir->bal = 1;
+            break;
+        case 0:
+            pointerU->bal = 0;
+            (*pointer)->dir->bal = 0;
+            break;
+        case 1:
+            pointerU->bal = -1;
+            (*pointer)->dir->bal = 0;
+            break;
+        default:
+            break;
+        }
+    }
+
+    (*pointer)->bal = 0;
+    h = -1;
+}
+
+int rotationRemove2(No **pointer, int *h){
+    No *pointerU = (*pointer)->dir;
+    bal(pointerU);
+
+    if(pointerU->bal >= 0){
+        (*pointer)->dir = pointerU->esq;
+        pointerU->esq = (*pointer);
+        (*pointer) = pointerU;
+
+        if(pointerU->bal == -1){
+            pointerU->bal = (*pointer)->esq->bal = 0;
+            h = -1;
+        }else{
+            pointerU->bal = -1;
+            (*pointer)->dir->bal = 1;
+            h = 0;
+        }
+
+    }else{
+
+        No *pointerV = pointerU->esq;
+        bal(pointerV);
+        pointerU->esq = pointerV->dir;
+        pointerV->dir = pointerU;
+        (*pointer)->dir = pointerV->esq;
+        pointerV->esq = (*pointer);
+        (*pointer) = pointerV;
+
+        switch (pointerV->bal)
+        {
+        case -1:
+            pointerU->bal = 0;
+            (*pointer)->esq->bal = -1;
+            break;
+        case 0:
+            pointerU->bal = 0;
+            (*pointer)->esq->bal = 0;
+            break;
+        case 1:
+            pointerU->bal = 1;
+            (*pointer)->esq->bal = 0;
+            break;
+        default:
+            break;
+        }
+    }
+
+    (*pointer)->bal = 0;
+    h = -1;
+}
+
 int insertAVL(int x, No **pointer, int *h){
     if((*pointer) == NULL){
         No *node = (No*)malloc(sizeof(No));
