@@ -257,6 +257,50 @@ int rotationRemove2(No **pointer, int *h){
     h = -1;
 }
 
+int balance(No **pointer, char rotationSide, int *h){
+    if(h -1){
+        if(rotationSide == "D" || rotationSide == "d"){
+            switch ((*pointer)->bal)
+            {
+            case 1:
+                (*pointer)->bal = 0;
+                break;
+            case 0:
+                (*pointer)->bal = -1;
+                h = 0;
+                break;
+            case -1:
+                rotationRemove1(pointer, h);
+                break;
+
+            default:
+                break;
+            }
+        }else if(rotationSide == "L" || rotationSide == "l"){
+            switch ((*pointer)->bal)
+            {
+            case -1:
+                (*pointer)->bal = 0;
+                break;
+            case 0:
+                (*pointer)->bal = 1;
+                h = -1;
+                break;
+            case 1:
+                rotationRemove2(pointer, h);
+                break;
+
+            default:
+                break;
+            }
+        }else{
+            printf("Lado da rotação invalida!!!\n");
+        }
+    }
+}
+
+
+
 int insertAVL(int x, No **pointer, int *h){
     if((*pointer) == NULL){
         No *node = (No*)malloc(sizeof(No));
@@ -315,6 +359,67 @@ int insertAVL(int x, No **pointer, int *h){
                     
                 default:
                     break;
+                }
+            }
+        }
+    }
+}
+
+int removeAVL(int x, No **pointer, int *h){
+    if((*pointer) == NULL){
+        printf("Elemento não existe!!!\n");
+        h = 0;
+    }else{
+        if(x < (*pointer)->key){
+            removeAVL(x, (*pointer)->dir, h);
+            balance(pointer, "D", h);
+        }else{
+            No *aux = (*pointer);
+            if((*pointer)->esq == NULL){
+                (*pointer) = (*pointer)->dir;
+                h = -1;
+            }else{
+                if((*pointer)->dir == NULL){
+                    (*pointer) = (*pointer)->esq;
+                    h = -1;
+                }else{
+                    No *son = (*pointer)->dir;
+                    
+                    if(son->esq == NULL){
+                        son->esq = (*pointer)->esq;
+                        son->bal = (*pointer)->bal;
+                        (*pointer) = son;
+                        h = -1;
+                    }else{
+                        No *fatherSon;
+                        while(son->esq != NULL){
+                            fatherSon = son;
+                            son = son->esq;
+                        }
+
+                        No *backup;
+                        int balBackup;
+
+                        backup = fatherSon;
+                        fatherSon = (*pointer);
+                        (*pointer)->esq = backup;
+
+                        backup = fatherSon->esq;
+                        fatherSon->esq = (*pointer)->esq;
+                        (*pointer)->esq = backup;
+
+                        backup = fatherSon->dir;
+                        fatherSon->dir = (*pointer)->dir;
+                        (*pointer)->dir = backup;
+
+                        balBackup = fatherSon->bal;
+                        fatherSon->bal = (*pointer)->bal;
+                        (*pointer)->bal = balBackup;
+
+                        removeAVL(x, (*pointer)->dir, h);
+                    }
+
+                    balance((*pointer), D, h);
                 }
             }
         }

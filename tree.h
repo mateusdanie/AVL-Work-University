@@ -19,6 +19,7 @@ int balance(No **pointer, char rotationSide, int *h);
 int checkAVL(No *pointer, int maxNodes);
 int countNodes(No *pointer, int *count);
 int insertAVL(int x, No **pointer, int *h);
+int removeAVL(int x, No **pointer, int *h);
 
 
 
