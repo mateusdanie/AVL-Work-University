@@ -1,3 +1,5 @@
+![Banner](https://github.com/mateusdanie/AVL-Work-University/blob/master/AVl%20work%20tree.png)
+
 # Trabalho de implementação de uma árvore AVL 
 [![NPM](https://img.shields.io/npm/l/react)](https://github.com/mateusdanie/AVL-Work-University/blob/master/LICENSE) 
 
