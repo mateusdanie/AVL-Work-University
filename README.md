@@ -5,7 +5,7 @@
 
 # Sobre o projeto
 
-Esse projeto visa a implementação de uma árvore AVL. Neste projeto, está presente as funções de adição e remoção de nós, bem como a função de calcular as alturas de um determinado nó, além da função de checar se é uma AVL. Todas as funções citadas estarão no tree.h.
+Esse projeto visa a implementação de uma árvore AVL, para a disciplina de Estrutura de Dados Avançada. Neste projeto, está presente as funções de adição e remoção de nós, bem como a função de calcular as alturas de um determinado nó, além da função de checar se é uma AVL. Todas as funções citadas estarão no tree.h.
 
 # Tecnologias utilizadas
 Linguagem C
